@@ -16,17 +16,6 @@ namespace godtycklig_1_3
             // Kalla metoden ReadInt för att få antal löner
             numberOfSalaries = ReadInt("Mata in antal löner: ");
 
-            // Kalla metoden ProcessSalaries för att mata in löner och bearbeta dom
-            ProcessSalaries(numberOfSalaries);
-
-        }
-
-        static void ProcessSalaries(int numberOfSalaries)
-        {
-            // Definiera variabler
-            int []salaries = new int[numberOfSalaries];
-            int i, n;
-
             // Felmeddelande om inmatat antal är mindre än 2
             if (numberOfSalaries < 2)
             {
@@ -36,6 +25,19 @@ namespace godtycklig_1_3
                 return;
             }
 
+            // Kalla metoden ProcessSalaries för att mata in löner och bearbeta dom
+            ProcessSalaries(numberOfSalaries);
+
+        }
+
+        static void ProcessSalaries(int numberOfSalaries)
+        {
+            // Definiera variabler
+            int []salaries = new int[numberOfSalaries];
+            int[] median = new int[numberOfSalaries];
+            int i, n;
+            double avarageSalary, salarySpread;
+
             // Låt användaren skriva in lönerna
             for (n = 1, i = 0; n <= numberOfSalaries; n++)
             {
@@ -44,10 +46,22 @@ namespace godtycklig_1_3
                 i++;
             }
 
-            // Räkna ut median, medel och spridning på lönerna
-            Console.WriteLine(salaries[0]);
-            Console.WriteLine(salaries[1]);
-            Console.WriteLine(salaries[2]);
+            // Räkna ut medellön
+            avarageSalary = salaries.Average();
+            Console.WriteLine("Medellön: {0}", avarageSalary);
+
+            // Räkna ut lönespridning
+            salarySpread = salaries.Max() - salaries.Min();
+            Console.WriteLine("Lönespridning: {0}", salarySpread);
+
+            // Gör kopia på array för att räkna ut median
+            Array.Copy(salaries, median, numberOfSalaries);
+            Array.Sort(median);
+            Console.WriteLine("Medianlön: {0}", median[median.Length/2]);
+            Console.WriteLine(median[0]);
+            Console.WriteLine(median[1]);
+            Console.WriteLine(median[2]);
+
         }
 
 
