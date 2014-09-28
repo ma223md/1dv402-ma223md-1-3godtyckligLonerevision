@@ -13,36 +13,33 @@ namespace godtycklig_1_3
             // Definiera variabler
             int numberOfSalaries;
 
-            // Kalla metoden ReadInt för att få antal löner
-            while (true)
+            do
             {
-                try
-                {
-                    numberOfSalaries = ReadInt("Mata in antal löner: "); 
-                    break;
-                } 
-                catch(FormatException) // Felmeddelande om något annat än ett heltal matas in
+                numberOfSalaries = ReadInt("Mata in antal löner: "); // Kalla metoden ReadInt för att få antal löner
+ 
+                // Felmeddelande om inmatat antal är mindre än 2
+                if (numberOfSalaries < 2)
                 {
                     Console.BackgroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Antalet måste vara ett heltal!");
-                    Console.ResetColor();
+                    Console.WriteLine("ERROR! Behövs minst 2 löner för uträkningen");
+                    Console.ResetColor();   
                 }
-            }
-            
-            // Felmeddelande om inmatat antal är mindre än 2
-            if (numberOfSalaries < 2)
-            {
-                Console.BackgroundColor = ConsoleColor.Red;
-                Console.WriteLine("ERROR! Behövs minst 2 löner för uträkningen");
+
+                else
+                {
+                    // Kalla metoden ProcessSalaries för att mata in löner och bearbeta dom
+                    ProcessSalaries(numberOfSalaries);
+                }
+
+                Console.BackgroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine("Tryck valfri tangent för ny beräkning, ESC avslutar.");
+                Console.WriteLine("");
                 Console.ResetColor();
-                return;
-            }
 
-            // Kalla metoden ProcessSalaries för att mata in löner och bearbeta dom
-            ProcessSalaries(numberOfSalaries);
-
+            } // Om annan tangent än ESC trycks startas ny beräkning
+            while (Console.ReadKey(true).Key != ConsoleKey.Escape); 
         }
-
+        
         static void ProcessSalaries(int numberOfSalaries)
         {
             // Definiera variabler
@@ -51,28 +48,9 @@ namespace godtycklig_1_3
             int i, n;
             double avarageSalary, salarySpread;
 
-            // Låt användaren skriva in lönerna
-            while (true)
+            for (i = 0; i < numberOfSalaries; i++)
             {
-                try
-                {
-                    for (n = 1, i = 0; n <= numberOfSalaries; n++)
-                    {
-                        Console.Write("Ange lön {0}: ", n);
-                        salaries[i] = int.Parse(Console.ReadLine());
-                        i++;
-                    }
-                    break;
-                }
-                // Felmeddelande om annat än heltal anges
-                catch (FormatException)
-                {
-                    Console.BackgroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Antalet måste vara ett heltal!");
-                    Console.ResetColor();
-                    return;
-                }
-
+                salaries[i] = ReadInt("Ange lön" + (i + 1) + ":");
             }
 
             Console.WriteLine("-------------------------------");
@@ -102,17 +80,25 @@ namespace godtycklig_1_3
                 }
             }
             Console.WriteLine("");
-
         }
-
 
         static int ReadInt(string prompt)
         {
             // Mata in antal löner
-            Console.Write(prompt);
-            return int.Parse(Console.ReadLine());
-
+            while (true)
+            {
+                Console.Write(prompt);
+                try
+                {
+                    return int.Parse(Console.ReadLine());
+                }
+                catch (FormatException) // Felmeddelande om något annat än ett heltal matas in
+                {
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Antalet måste vara ett heltal!");
+                    Console.ResetColor();
+                }
+            }
         }
-
     }
 }
